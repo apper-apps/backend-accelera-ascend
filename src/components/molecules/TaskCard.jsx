@@ -49,7 +49,7 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
               </Badge>
             </div>
           </div>
-          <div className="flex items-center gap-1 ml-2">
+<div className="flex items-center">
             <Button
               variant="ghost"
               size="icon"
