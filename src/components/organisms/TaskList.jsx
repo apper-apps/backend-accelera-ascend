@@ -7,7 +7,6 @@ import ApperIcon from "@/components/ApperIcon";
 import tasksService from "@/services/api/tasksService";
 
 const TaskList = ({ tasks, onTasksChange, loading }) => {
-  const [updatingTasks, setUpdatingTasks] = useState(new Set());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [deletingTaskId, setDeletingTaskId] = useState(null);
@@ -38,54 +37,14 @@ setDeletingTaskId(task.Id);
       setDeletingTaskId(null);
     }
   };
-const handleSaveTask = async (formData) => {
+
+  const handleSaveTask = async (formData) => {
     if (editingTask) {
-      await tasksService.update(editingTask.Id, formData);
+await tasksService.update(editingTask.Id, formData);
     } else {
       await tasksService.create(formData);
     }
     onTasksChange();
-  };
-
-  const handleStatusUpdate = async (taskId, updates) => {
-    setUpdatingTasks(prev => new Set([...prev, taskId]));
-    
-    try {
-      // Get current task data
-      const currentTask = tasks.find(task => task.Id === taskId);
-      if (!currentTask) {
-        throw new Error('Task not found');
-      }
-
-      // Prepare update data with current task data plus status change
-      const updateData = {
-        title: currentTask.title,
-        description: currentTask.description,
-        taskType: currentTask.taskType,
-        assignee: currentTask.assignee,
-        dueDate: currentTask.dueDate,
-        status: updates.status || currentTask.status,
-        tags: currentTask.tags
-      };
-
-      const result = await tasksService.update(taskId, updateData);
-      
-      if (result) {
-        toast.success(`Task status updated to "${updates.status}"`);
-        onTasksChange(); // Refresh tasks
-      } else {
-        throw new Error('Failed to update task status');
-      }
-    } catch (error) {
-      console.error("Error updating task status:", error);
-      toast.error("Failed to update task status. Please try again.");
-    } finally {
-      setUpdatingTasks(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(taskId);
-        return newSet;
-      });
-    }
   };
 
   const handleCloseModal = () => {
@@ -162,11 +121,10 @@ const handleSaveTask = async (formData) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tasks.map((task) => (
             <div key={task.Id} className="relative">
-<TaskCard
+              <TaskCard
                 task={task}
                 onEdit={handleEditTask}
                 onDelete={handleDeleteTask}
-                onStatusUpdate={handleStatusUpdate}
               />
               {deletingTaskId === task.Id && (
                 <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-lg flex items-center justify-center">
