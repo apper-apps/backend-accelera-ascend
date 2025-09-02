@@ -6,7 +6,7 @@ const Badge = React.forwardRef(({
   variant = "default", 
   ...props 
 }, ref) => {
-  const baseStyles = "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2";
+const baseStyles = "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2";
   
   const variants = {
     default: "bg-slate-100 text-slate-800 border border-slate-200",
